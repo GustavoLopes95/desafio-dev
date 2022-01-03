@@ -3,6 +3,7 @@ package com.bycoders.challangebycoders;
 import com.bycoders.challangebycoders.commands.ImportStatementListCommand;
 import com.bycoders.challangebycoders.domain.entities.Client;
 import com.bycoders.challangebycoders.domain.entities.Statement;
+import com.bycoders.challangebycoders.domain.enums.DocumentTypeEnum;
 import com.bycoders.challangebycoders.domain.enums.OperationTypeEnum;
 import com.bycoders.challangebycoders.domain.factories.OperationFactory;
 import com.bycoders.protobuf.StatementsProtos;
@@ -20,7 +21,7 @@ public class TestBase {
 
     protected StatementsProtos.Statements makeProtoStatement() {
         return StatementsProtos.Statements.newBuilder()
-                .addStatement("3201903010000014200096206760174753****3153153453JOÃO MACEDO   BAR DO JOÃO")
+                .addStatement("3201903010000014200096206760174753****3153153453JOÃO MACEDO   BAR DO JOÃO       ")
                 .addStatement("5201903010000013200556418150633123****7687145607MARIA JOSEFINALOJA DO Ó - MATRIZ")
                 .build();
     }
@@ -43,14 +44,10 @@ public class TestBase {
         var hash = DatatypeConverter.printHexBinary(digest).toUpperCase();
 
         var date = LocalDateTime.parse("20190301 153453", DateTimeFormatter.ofPattern("yyyyMMdd HHmmss"));
-        return new Statement(client.getId(), operationType, value, "****3153", date);
+        return new Statement(client, operationType, value, "****3153", date);
     }
 
     protected Client makeClient() {
-        return new Client(1L,
-                "BAR DO JOÃO",
-                "BAR DO JOÃO",
-                "09620676017",
-                1);
+        return new Client("BAR DO JOÃO", "09620676017", DocumentTypeEnum.CPF, "João Macedo");
     }
 }

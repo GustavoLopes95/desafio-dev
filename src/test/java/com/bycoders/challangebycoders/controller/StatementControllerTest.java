@@ -35,9 +35,6 @@ public class StatementControllerTest extends TestBase {
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
     @MockBean
     ImportStatementsListUseCase importStatementsUseCase;
 

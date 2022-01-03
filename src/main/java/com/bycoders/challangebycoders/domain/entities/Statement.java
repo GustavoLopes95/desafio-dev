@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class Statement extends DomainEntity {
 
     @Column(name = "client_id")
-    private Long clientId;
+    private Client client;
 
     @Column(name = "operation_type")
     private Integer type;
@@ -45,8 +45,8 @@ public class Statement extends DomainEntity {
     @CreationTimestamp
     private Instant createdAt;
 
-    public Statement(Long clientId, OperationType operationType, Double value, String cardNumber, LocalDateTime transactionDate) {
-        this.clientId = clientId;
+    public Statement(Client client, OperationType operationType, Double value, String cardNumber, LocalDateTime transactionDate) {
+        this.client = client;
         this.type = operationType.getId();
 //        this.description = description;
         this.cardNumber = cardNumber;
@@ -67,10 +67,6 @@ public class Statement extends DomainEntity {
 
     public OperationType getType() {
         return OperationFactory.make(OperationTypeEnum.valueOf(this.type));
-    }
-
-    public void setType(OperationType type) {
-        this.type = type.getId();
     }
 
     public boolean isCredit() {

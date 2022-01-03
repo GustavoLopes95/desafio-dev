@@ -12,5 +12,4 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class StatementRepository implements IStatementRepository, JpaRepository<Statement, Long> {
-
 }
