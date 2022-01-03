@@ -26,8 +26,20 @@ public class TestBase {
                 .build();
     }
 
+    protected StatementsProtos.Statements makeInvalidProtoStatement() {
+        return StatementsProtos.Statements.newBuilder()
+                .addStatement("3201903010000014200096206760174753****3153153453JOÃO MACEDO   BAR DO JOÃO       ")
+                .addStatement("520010020055650633123****7687145607              LOJA DO Ó - MATRIZ")
+                .build();
+    }
+
     protected ImportStatementListCommand makeImportStatementListCommand() {
         var protoList = this.makeProtoStatement();
+        return new ImportStatementListCommand(protoList.getStatementList());
+    }
+
+    protected ImportStatementListCommand makeImportInvalidStatementListCommand() {
+        var protoList = this.makeInvalidProtoStatement();
         return new ImportStatementListCommand(protoList.getStatementList());
     }
 

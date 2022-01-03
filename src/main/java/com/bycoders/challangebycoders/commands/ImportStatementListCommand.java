@@ -1,5 +1,6 @@
 package com.bycoders.challangebycoders.commands;
 
+import com.bycoders.challangebycoders.core.messages.Command;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

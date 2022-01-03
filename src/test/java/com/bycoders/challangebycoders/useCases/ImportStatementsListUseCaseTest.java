@@ -67,4 +67,23 @@ public class ImportStatementsListUseCaseTest extends TestBase {
         Mockito.verify(clientRepository, Mockito.times(2)).findByDocument(Mockito.anyString());
         Mockito.verify(clientRepository, Mockito.times(2)).save(Mockito.any(Client.class));
     }
+
+    @Test
+    @DisplayName("Service - should save parcial statements and return errors messagens")
+    public void importStatementWitInvalidStatement() throws Exception {
+        var command = this.makeImportInvalidStatementListCommand();
+        var statement = this.makeStatement();
+        var client = this.makeClient();
+        Mockito.when(statementRepository.saveAll(List.of(statement))).thenReturn(null);
+        Mockito.doReturn(client).when(clientRepository).findByDocument(Mockito.anyString());
+
+        var response = importStatementsListUseCase.execute(command);
+
+        Assertions.assertThat(response.get("message")).isEqualTo("Operação parcialmente concluida!");
+        Assertions.assertThat(response.get("errors")).isNotNull();
+
+        Mockito.verify(statementRepository, Mockito.times(1)).saveAll(Mockito.anyList());
+        Mockito.verify(clientRepository, Mockito.times(2)).findByDocument(Mockito.anyString());
+        Mockito.verify(clientRepository, Mockito.never()).save(Mockito.any(Client.class));
+    }
 }

@@ -26,7 +26,7 @@ public class OperationFactory {
             case ALUGUEL:
                 return new OperationType(9, "Aluguel", false);
             default:
-                throw new RuntimeException("Not implement");
+                return null;
         }
     }
 }

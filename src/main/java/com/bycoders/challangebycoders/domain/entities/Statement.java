@@ -1,6 +1,7 @@
 package com.bycoders.challangebycoders.domain.entities;
 
 import com.bycoders.challangebycoders.core.domainObject.DomainEntity;
+import com.bycoders.challangebycoders.domain.enums.DocumentTypeEnum;
 import com.bycoders.challangebycoders.domain.enums.OperationTypeEnum;
 import com.bycoders.challangebycoders.domain.factories.OperationFactory;
 import com.bycoders.challangebycoders.domain.valueObject.OperationType;
@@ -14,10 +15,10 @@ import javax.persistence.Entity;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
-@NoArgsConstructor
 public class Statement extends DomainEntity {
 
     @Column(name = "client_id")
@@ -45,10 +46,22 @@ public class Statement extends DomainEntity {
     @CreationTimestamp
     private Instant createdAt;
 
+
+    public Statement(Long id, Client client, Integer type, Double value, java.lang.String cardNumber, LocalDateTime transactionDate) {
+        super(id);
+        this.client = client;
+        this.type = type;
+        this.value = value;
+        this.cardNumber = cardNumber;
+        this.transactionDate = transactionDate;
+
+        this.addValue(value);
+    }
+
     public Statement(Client client, OperationType operationType, Double value, String cardNumber, LocalDateTime transactionDate) {
+        super();
         this.client = client;
         this.type = operationType.getId();
-//        this.description = description;
         this.cardNumber = cardNumber;
         this.transactionDate = transactionDate;
 //        this.accountingBalance = accountingBalance;
@@ -58,10 +71,6 @@ public class Statement extends DomainEntity {
     }
 
     public void addValue(Double value) {
-        if(value == 0) {
-            this.value = 0.00;
-            return;
-        }
         this.value = value/100.00;
     }
 
@@ -71,5 +80,25 @@ public class Statement extends DomainEntity {
 
     public boolean isCredit() {
         return this.getType().getIsCredit();
+    }
+
+    public Boolean isValid() {
+        if(Objects.isNull(type)) {
+            this.errors.addErrors("Tipo da operação", "Não pode estar vazio ou contem um valor invalido, favor usar de 1-9");
+        }
+
+        if(Double.isNaN(value)) {
+            this.errors.addErrors("Valor", "Valor de transação invalido, favor seguir o padrão ex: R$1,20, 0000000120");
+        }
+
+        if(cardNumber.isEmpty() || cardNumber.length() < 8) {
+            this.errors.addErrors("Cartão de credito", "Não pode estar vazio ou é um numero inválido");
+        }
+
+        if(Objects.isNull(transactionDate)) {
+            this.errors.addErrors("Data da ocorrência", "Não pode estar vazia ou esta em um padrão invalido, favor utilizar 'yyyyMMdd HHmmss'");
+        }
+
+        return this.errors.isValid();
     }
 }

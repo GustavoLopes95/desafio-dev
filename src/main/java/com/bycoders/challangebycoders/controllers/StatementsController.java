@@ -20,7 +20,7 @@ public class StatementsController {
     private ImportStatementsListUseCase useCase;
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> importStatements(InputStream statements) throws Exception {
+    public ResponseEntity<Map<String, Object>> importStatements(InputStream statements) throws Exception {
         var command = new ImportStatementListCommand(StatementsProtos.Statements.parseFrom(statements).getStatementList());
         var response= useCase.execute(command);
         return ResponseEntity.ok().body(response);
