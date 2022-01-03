@@ -7,6 +7,7 @@ import com.bycoders.challangebycoders.repositories.ClientRepository;
 import com.bycoders.challangebycoders.repositories.StatementRepository;
 import com.bycoders.challangebycoders.useCase.ImportStatementsListUseCase;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,8 +33,13 @@ public class ImportStatementsListUseCaseTest extends TestBase {
     @MockBean
     ClientRepository clientRepository;
 
-    @Autowired
     private ImportStatementsListUseCase importStatementsListUseCase;
+
+    @BeforeEach
+    @Autowired
+    private void setup() {
+        this.importStatementsListUseCase = new ImportStatementsListUseCase(clientRepository, statementRepository);
+    }
 
     @Test
     @DisplayName("Service - should import a statement")
@@ -83,7 +89,6 @@ public class ImportStatementsListUseCaseTest extends TestBase {
         Assertions.assertThat(response.get("errors")).isNotNull();
 
         Mockito.verify(statementRepository, Mockito.times(1)).saveAll(Mockito.anyList());
-        Mockito.verify(clientRepository, Mockito.times(2)).findByDocument(Mockito.anyString());
-        Mockito.verify(clientRepository, Mockito.never()).save(Mockito.any(Client.class));
+        Mockito.verify(clientRepository, Mockito.times(1)).findByDocument(Mockito.anyString());
     }
 }

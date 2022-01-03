@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UseCasesConfig {
 
-    @Bean
-    public ImportStatementsListUseCase importStatementsListUseCase() {
-        return new ImportStatementsListUseCase();
-    }
+//    @Bean
+//    public ImportStatementsListUseCase importStatementsListUseCase() {
+//        return new ImportStatementsListUseCase();
+//    }
 }

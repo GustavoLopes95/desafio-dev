@@ -19,12 +19,14 @@ import java.util.stream.Collectors;
 public class ImportStatementsListUseCase {
 
     private List<Map<String, DomainValidateError>> errors = new ArrayList<>();
-
-    @Autowired
     private ClientRepository clientRepository;
+    private StatementRepository statementRepository;
 
     @Autowired
-    private StatementRepository statementRepository;
+    public ImportStatementsListUseCase(ClientRepository clientRepository, StatementRepository statementRepository) {
+        this.clientRepository = clientRepository;
+        this.statementRepository = statementRepository;
+    }
 
     private Integer index = -1;
 
