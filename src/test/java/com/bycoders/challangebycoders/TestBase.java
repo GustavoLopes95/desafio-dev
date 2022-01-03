@@ -2,6 +2,7 @@ package com.bycoders.challangebycoders;
 
 import com.bycoders.challangebycoders.commands.ImportStatementListCommand;
 import com.bycoders.challangebycoders.domain.entities.Client;
+import com.bycoders.challangebycoders.domain.entities.ClientBalance;
 import com.bycoders.challangebycoders.domain.entities.Statement;
 import com.bycoders.challangebycoders.domain.enums.DocumentTypeEnum;
 import com.bycoders.challangebycoders.domain.enums.OperationTypeEnum;
@@ -60,6 +61,11 @@ public class TestBase {
     }
 
     protected Client makeClient() {
-        return new Client("BAR DO JOÃO", "09620676017", DocumentTypeEnum.CPF, "João Macedo");
+        return new Client(1L,"BAR DO JOÃO", "09620676017", DocumentTypeEnum.CPF, "João Macedo");
+    }
+
+    protected ClientBalance makeClientBalance() {
+        var client = this.makeClient();
+        return new ClientBalance(client, 0.00);
     }
 }

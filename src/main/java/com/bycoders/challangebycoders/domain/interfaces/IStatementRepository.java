@@ -8,6 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IStatementRepository {
-    List<Statement> findAll(Specification<Statement> spec, Pageable pageable);
-    Optional<Statement> findById(Long id);
+    void saveAll(List<Statement> statements);
 }

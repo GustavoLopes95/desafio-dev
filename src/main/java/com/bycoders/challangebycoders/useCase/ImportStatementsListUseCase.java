@@ -2,10 +2,12 @@ package com.bycoders.challangebycoders.useCase;
 
 import com.bycoders.challangebycoders.commands.ImportStatementListCommand;
 import com.bycoders.challangebycoders.domain.entities.Client;
+import com.bycoders.challangebycoders.domain.entities.ClientBalance;
 import com.bycoders.challangebycoders.domain.entities.Statement;
 import com.bycoders.challangebycoders.domain.factories.ClientFactory;
 import com.bycoders.challangebycoders.domain.factories.StatementFactory;
 import com.bycoders.challangebycoders.core.domainObject.DomainValidateError;
+import com.bycoders.challangebycoders.repositories.ClientBalanceRepository;
 import com.bycoders.challangebycoders.repositories.ClientRepository;
 import com.bycoders.challangebycoders.repositories.StatementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +22,15 @@ public class ImportStatementsListUseCase {
 
     private List<Map<String, DomainValidateError>> errors = new ArrayList<>();
     private ClientRepository clientRepository;
+    private ClientBalanceRepository clientBalanceRepository;
+
     private StatementRepository statementRepository;
 
     @Autowired
-    public ImportStatementsListUseCase(ClientRepository clientRepository, StatementRepository statementRepository) {
+    public ImportStatementsListUseCase(ClientRepository clientRepository, StatementRepository statementRepository, ClientBalanceRepository clientBalanceRepository) {
         this.clientRepository = clientRepository;
         this.statementRepository = statementRepository;
+        this.clientBalanceRepository = clientBalanceRepository;
     }
 
     private Integer index = -1;
@@ -35,6 +40,7 @@ public class ImportStatementsListUseCase {
         var statementsList = this.parse(command.getStatements());
         var statements = statementsList.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
         this.statementRepository.saveAll(statements);
+        this.updateClientBalance(statements);
         this.sendNotification(statements);
 
         if(!this.errors.isEmpty()) {
@@ -67,10 +73,22 @@ public class ImportStatementsListUseCase {
 
         var entity = clientRepository.findByDocument(client.getDocument());
         if(Objects.isNull(entity)) {
-            return clientRepository.save(client);
+            clientRepository.save(client);
+            clientBalanceRepository.save(new ClientBalance(client, 0.00));
+            return client;
         }
 
         return entity;
+    }
+
+    private void updateClientBalance(List<Statement> statements) {
+        statements.stream().forEach(statement -> {
+            var balance = clientBalanceRepository.findByClientId(statement.getClient().getId());
+            if(statement.getType().getIsCredit()) balance.incrementValue(statement.getValue());
+            else if(!statement.getType().getIsCredit()) balance.decrementValue(statement.getValue());
+
+            clientBalanceRepository.update(balance);
+        });
     }
 
     private void sendNotification(List<Statement> statements) {

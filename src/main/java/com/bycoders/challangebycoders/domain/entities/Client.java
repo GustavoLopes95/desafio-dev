@@ -25,11 +25,12 @@ public class Client extends DomainEntity {
     @Column(name = "billing_contact_name")
     public String billingContactName;
 
-    public Client(Long id,  String corporateName, String document, DocumentTypeEnum documentType) {
+    public Client(Long id,  String corporateName, String document, DocumentTypeEnum documentType, String billingContactName) {
         super(id);
         this.name = corporateName;
         this.document = document;
         this.documentType = documentType.getCode();
+        this.billingContactName = billingContactName;
     }
 
     public Client(String name, String document, DocumentTypeEnum documentType, String billingContactName) {
