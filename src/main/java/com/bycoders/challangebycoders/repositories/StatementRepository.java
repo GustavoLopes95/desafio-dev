@@ -1,25 +1,29 @@
 package com.bycoders.challangebycoders.repositories;
 
-
 import com.bycoders.challangebycoders.domain.entities.Statement;
 import com.bycoders.challangebycoders.domain.interfaces.IStatementRepository;
-import com.bycoders.challangebycoders.repositories.adapters.IClientRepositoryJpaAdapter;
 import com.bycoders.challangebycoders.repositories.adapters.IStatementRepositoryJpaAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import javax.persistence.EntityManager;
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Repository;
 import java.util.List;
-import java.util.Optional;
 
+@Repository
 public class StatementRepository implements IStatementRepository {
 
     @Autowired
     private IStatementRepositoryJpaAdapter jpaAdapter;
 
     @Override
+    public List<Statement> findAll(Long clientId) {
+        return jpaAdapter.findByClientId(clientId);
+    }
+
+    @Override
     public void saveAll(List<Statement> statements) {
         jpaAdapter.saveAll(statements);
     }
+
 }

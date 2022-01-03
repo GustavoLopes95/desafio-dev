@@ -4,13 +4,16 @@ import com.bycoders.challangebycoders.core.domainObject.DomainEntity;
 import com.bycoders.challangebycoders.domain.enums.DocumentTypeEnum;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import java.util.Objects;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Client extends DomainEntity {
 
     @Column(name = "corporate_name")

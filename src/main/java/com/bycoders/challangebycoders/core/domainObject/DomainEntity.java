@@ -1,5 +1,6 @@
 package com.bycoders.challangebycoders.core.domainObject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 
@@ -14,6 +15,8 @@ public abstract class DomainEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
+    @Transient
     @Getter(AccessLevel.NONE)
     protected DomainValidate errors;
 
@@ -39,6 +42,7 @@ public abstract class DomainEntity {
         return Objects.hash(id);
     }
 
+    @Transient
     public DomainValidateError getErrors() {
         return new DomainValidateError(this.getClass().getName(), this.errors.getErrors());
     }

@@ -4,7 +4,9 @@ import com.bycoders.challangebycoders.domain.entities.ClientBalance;
 import com.bycoders.challangebycoders.domain.interfaces.IClientBalanceRepository;
 import com.bycoders.challangebycoders.repositories.adapters.IClientBalanceRepositoryJpaAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class ClientBalanceRepository implements IClientBalanceRepository {
 
     @Autowired

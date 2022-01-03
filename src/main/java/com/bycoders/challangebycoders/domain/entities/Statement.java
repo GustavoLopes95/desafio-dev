@@ -10,8 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,15 +18,15 @@ import java.util.Objects;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Statement extends DomainEntity {
 
-    @Column(name = "client_id")
+    @ManyToOne
+    @JoinColumn(name = "client_id")
     private Client client;
 
     @Column(name = "operation_type")
     private Integer type;
-
-    private String description;
 
     private Double value;
 
@@ -40,8 +39,6 @@ public class Statement extends DomainEntity {
     @Column(name = "transaction_date")
     private LocalDateTime transactionDate;
 
-    @Column(name = "security_hash")
-    private String securityHash;
 
     @CreationTimestamp
     private Instant createdAt;
@@ -65,7 +62,6 @@ public class Statement extends DomainEntity {
         this.cardNumber = cardNumber;
         this.transactionDate = transactionDate;
 //        this.accountingBalance = accountingBalance;
-//        this.securityHash = securityHash;
 
         this.addValue(value);
     }
@@ -78,10 +74,12 @@ public class Statement extends DomainEntity {
         return OperationFactory.make(OperationTypeEnum.valueOf(this.type));
     }
 
+    @Transient
     public boolean isCredit() {
         return this.getType().getIsCredit();
     }
 
+    @Transient
     public Boolean isValid() {
         if(Objects.isNull(type)) {
             this.errors.addErrors("Tipo da operação", "Não pode estar vazio ou contem um valor invalido, favor usar de 1-9");

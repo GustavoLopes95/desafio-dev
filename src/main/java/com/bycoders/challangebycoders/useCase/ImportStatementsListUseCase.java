@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 public class ImportStatementsListUseCase {
 
     private List<Map<String, DomainValidateError>> errors = new ArrayList<>();
+
     private ClientRepository clientRepository;
     private ClientBalanceRepository clientBalanceRepository;
-
     private StatementRepository statementRepository;
 
     @Autowired

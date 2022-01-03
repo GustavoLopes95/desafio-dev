@@ -17,7 +17,7 @@ public class ClientFactory {
     }
 
     private static String applyTrim(String value) {
-        if(!Objects.isNull(value)) value.trim();
-        return value;
+        if(!Objects.isNull(value)) return value.trim();
+        return null;
     }
 }

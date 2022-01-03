@@ -1,37 +1,51 @@
 package com.bycoders.challangebycoders.domain.entities;
 
+import com.bycoders.challangebycoders.core.domainObject.DomainEntity;
 import com.bycoders.challangebycoders.exceptions.DomainException;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.text.DecimalFormat;
 
 @Entity
 @Getter
-public class ClientBalance {
+@NoArgsConstructor
+public class ClientBalance extends DomainEntity {
 
-    @Id
-    @Column(name = "client_id", nullable = false, unique = true)
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false, unique = true)
     private Client client;
 
     private Double value;
 
-    public ClientBalance(Client client, Double value) {
+    public ClientBalance(Long id, Client client, Double value) {
+        super(id);
         this.client = client;
         this.value = value;
+    }
+
+    public ClientBalance(Client client, Double value) {
+        super();
+        this.client = client;
+        this.value = value;
+    }
+
+    public String getValue() {
+        return new DecimalFormat("#.00").format(value);
     }
 
     public void incrementValue(Double value) {
         if(value < 0) {
             value = value * -1;
         }
-        this.value = value;
+        this.value += value;
     }
 
     public void decrementValue(Double value) {
         if(value > 0) {
-            value = value * -1;
+            value -= value * -1;
         }
         this.value = value;
     }
