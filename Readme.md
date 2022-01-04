@@ -11,19 +11,28 @@
 
 <h2>Estrutura</h2>
  * commands - payloads da aplicação
+ 
  * config - configuração das dependencias, no caso o TestConfig realiza uma especie de bootstrap para a aplicação já começar com alguns dados
+ 
  * controllers - controladores ou resourcers
+
  * core - classes abstratas ou interfaces que garante determinados comportamentos padrões
+
  * domain - A regra de negocio da aplicação
    - entities - Entidades do negocio
    - enums - Enums
    - factories - factory pattern para criação das entidades e value objects
    - interfaces - contratros da camada de dominio para serviços da camada de aplicação
    - value objects - Objetos de valores, agregam informações das entidades
+ 
  * exceptions - Exceções do sistema
+
  * repositories - camada de acesso aos dados, devem respeitar o contrato do dominio
+
  * use case - Operações que o sistema pode realizar
+
  * utils - utilitarios
+
  * proto - Modelo dos objetos protobuf
 
 <h2>Arquitetura</h2>
