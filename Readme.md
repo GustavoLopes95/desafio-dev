@@ -1,6 +1,6 @@
 <h1>Desafio By Coders</h1>
 
-    O serviço se resume em importar transferencais bancarias serializadas em protobuf e listar as mesmas
+    O serviço se resume em importar transações bancarias serializadas em protobuf e listar as mesmas
 através de um endpoint.
 
 <h2>Como executar ?</h2>
@@ -27,5 +27,26 @@ através de um endpoint.
  - utils - utilitarios
  - proto - Modelo dos objetos protobuf
 
+<h2>Arquitetura</h2>
 
+    O estilo arquitetural adotado foi o estilo cebelo (Onion) visto que conseguimos desacoplar muito bem as camadas de forma simples, sem inserir muita complexidade no projeto
+
+    Como não sabemos quem iria consumir o projeto, os endpoints foram desenvolvidos seguindo o padrão rest.
+
+    Os errors do payload deveriam ser validados no command, porem como nestes caso exigiria realizar todo o parse para isso, e isso significa usar mais recuso computacional para isso, a validação foram incluidas apenas nas entidades. 
+
+    As entidades foram dividas em Clients, Statemente e Client Balance. Os statementes funcionam conforme os extrato bancario, neles conseguimos acompanhar a evolução bancaria de cada cliente enquanto o Client Balance é um snapshot de todas as transferencias realizadas na conta do usuario, assim se quisermos ver o total não vamos precisar ficar realizar window functions em SQl, simplismente recuperamos informações dessa tabela.
+    Obs: Para uma base de produção de periodo em periodo, geralmente os bancos realizam de 3 em 3 meses, deveria ser realizar um snapshot da tabela de statements também, e seus discriminados deveria ser transferidos para outra base de dados, assim evitariamos gargalos na base de dados principal. 
+
+<h2>Pontos de melhoria</h2>
+
+    Devido ao espaço curto de tempo para o desenvolvimento alguns pontos ficaram pendentes como:
+        - Desacoplar o use case para cadastrar usuario do use case de importar lista de transações
+        - Desacoplar o use case de atualizar balanço do usuario
+        - Terminar de desenvolver o envio de eventos para: Novo usuario cadastrado, Nova transação importada, Saldo do usuário atualziado
+        - Desacoplar validação de erro do use case
+        - Implementar paginação, sorts e filtros por parametros no endpoint de recuperar Transações
+
+        
+    
 
