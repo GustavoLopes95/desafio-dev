@@ -55,7 +55,7 @@ public class ImportStatementsListUseCaseTest extends TestBase {
         var client = this.makeClient();
         var balance = this.makeClientBalance();
 
-        Mockito.mock(StatementRepository.class).saveAll(Mockito.anyList());
+        Mockito.mock(StatementRepository.class).save(Mockito.any(Statement.class));
         Mockito.doReturn(client).when(clientRepository).findByDocument(Mockito.anyString());
         Mockito.doReturn(balance).when(clientBalanceRepository).save(Mockito.any(ClientBalance.class));
         Mockito.doReturn(balance).when(clientBalanceRepository).findByClientId(Mockito.anyLong());
@@ -63,7 +63,7 @@ public class ImportStatementsListUseCaseTest extends TestBase {
         var response = importStatementsListUseCase.execute(command);
 
         Assertions.assertThat(response.get("message")).isEqualTo("Todos as transações foram importadas com sucesso!");
-        Mockito.verify(statementRepository, Mockito.times(1)).saveAll(Mockito.anyList());
+        Mockito.verify(statementRepository, Mockito.times(1)).save(Mockito.any(Statement.class));
         Mockito.verify(clientRepository, Mockito.times(2)).findByDocument(Mockito.anyString());
         // All client are already registered in database
         Mockito.verify(clientRepository, Mockito.never()).save(Mockito.any(Client.class));

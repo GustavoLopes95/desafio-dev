@@ -16,6 +16,10 @@ public class StatementRepository implements IStatementRepository {
     @Autowired
     private IStatementRepositoryJpaAdapter jpaAdapter;
 
+    public Statement save(Statement statement) {
+        return jpaAdapter.save(statement);
+    }
+
     @Override
     public List<Statement> findAll(Long clientId) {
         return jpaAdapter.findByClientId(clientId);

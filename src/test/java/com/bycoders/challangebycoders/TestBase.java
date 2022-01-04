@@ -12,6 +12,7 @@ import com.bycoders.protobuf.StatementsProtos;
 import org.hibernate.id.GUIDGenerator;
 
 import javax.xml.bind.DatatypeConverter;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.time.Instant;
@@ -50,7 +51,7 @@ public class TestBase {
 
     protected Statement makeStatement() throws Exception {
         var client = this.makeClient();
-        var value = 0000014200.0;
+        var value = new BigDecimal(0000014200.0);
         var balance = 0.00;
         var now = Instant.now();
         var operationType = OperationFactory.make(OperationTypeEnum.valueOf(1));
@@ -61,7 +62,7 @@ public class TestBase {
         var hash = DatatypeConverter.printHexBinary(digest).toUpperCase();
 
         var date = LocalDateTime.parse("20190301 153453", DateTimeFormatter.ofPattern("yyyyMMdd HHmmss"));
-        return new Statement(client, operationType, value, "****3153", date);
+        return new Statement(client, operationType, value, "****3153", date, new BigDecimal(0.00));
     }
 
     protected Client makeClient() {
@@ -70,6 +71,6 @@ public class TestBase {
 
     protected ClientBalance makeClientBalance() {
         var client = this.makeClient();
-        return new ClientBalance(client, 0.00);
+        return new ClientBalance(client, BigDecimal.valueOf(0.00));
     }
 }

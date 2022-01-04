@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -12,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ListStatementsByClientUseCaseResponse {
     private List<Statement> statements;
-    private String total;
+    private BigDecimal total;
     private String clientName;
 
     public void addStatement(Statement s) {

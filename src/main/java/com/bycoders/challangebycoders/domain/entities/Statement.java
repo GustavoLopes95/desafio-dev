@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,13 +31,14 @@ public class Statement extends DomainEntity {
     @Column(name = "operation_type")
     private Integer type;
 
-    private Double value;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal value;
 
     @Column(name = "card_number")
     private String cardNumber;
 
-    @Column(name = "accounting_balance")
-    private Double accountingBalance;
+    @Column(name = "accounting_balance", precision = 10, scale = 2)
+    private BigDecimal accountingBalance;
 
     @Column(name = "transaction_date")
     private LocalDateTime transactionDate;
@@ -45,30 +48,31 @@ public class Statement extends DomainEntity {
     private Instant createdAt;
 
 
-    public Statement(Long id, Client client, Integer type, Double value, String cardNumber, LocalDateTime transactionDate) {
+    public Statement(Long id, Client client, Integer type, BigDecimal value, String cardNumber, LocalDateTime transactionDate, BigDecimal accountingBalance) {
         super(id);
         this.client = client;
         this.type = type;
         this.value = value;
         this.cardNumber = cardNumber;
         this.transactionDate = transactionDate;
+        this.accountingBalance = accountingBalance;
 
         this.addValue(value);
     }
 
-    public Statement(Client client, OperationType operationType, Double value, String cardNumber, LocalDateTime transactionDate) {
+    public Statement(Client client, OperationType operationType, BigDecimal value, String cardNumber, LocalDateTime transactionDate, BigDecimal accountingBalance) {
         super();
         this.client = client;
         this.type = operationType.getId();
         this.cardNumber = cardNumber;
         this.transactionDate = transactionDate;
-//        this.accountingBalance = accountingBalance;
+        this.accountingBalance = accountingBalance;
 
         this.addValue(value);
     }
 
-    public void addValue(Double value) {
-        this.value = value/100.00;
+    public void addValue(BigDecimal value) {
+        this.value = value.divide(BigDecimal.valueOf(100.00), 2, RoundingMode.UNNECESSARY);
     }
 
     public OperationType getType() {
@@ -86,8 +90,8 @@ public class Statement extends DomainEntity {
             this.errors.addErrors("Tipo da operação", "Não pode estar vazio ou contem um valor invalido, favor usar de 1-9");
         }
 
-        if(Double.isNaN(value)) {
-            this.errors.addErrors("Valor", "Valor de transação invalido, favor seguir o padrão ex: R$1,20, 0000000120");
+        if(Objects.isNull(value)) {
+            this.errors.addErrors("Valor", "Valor de transação invalido, favor seguir o padrão ex: R$1,20, 000001200");
         }
 
         if(cardNumber.isEmpty() || cardNumber.length() < 8) {

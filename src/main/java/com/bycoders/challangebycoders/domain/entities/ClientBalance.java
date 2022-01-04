@@ -1,13 +1,12 @@
 package com.bycoders.challangebycoders.domain.entities;
 
 import com.bycoders.challangebycoders.core.domainObject.DomainEntity;
-import com.bycoders.challangebycoders.exceptions.DomainException;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -18,35 +17,30 @@ public class ClientBalance extends DomainEntity {
     @JoinColumn(name = "client_id", nullable = false, unique = true)
     private Client client;
 
-    private Double value;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal value;
 
-    public ClientBalance(Long id, Client client, Double value) {
+    public ClientBalance(Long id, Client client, BigDecimal value) {
         super(id);
         this.client = client;
         this.value = value;
     }
 
-    public ClientBalance(Client client, Double value) {
+    public ClientBalance(Client client, BigDecimal value) {
         super();
         this.client = client;
         this.value = value;
     }
 
-    public String getValue() {
-        return new DecimalFormat("#.##").format(value);
+    public BigDecimal getValue() {
+        return value;
     }
 
-    public void incrementValue(Double value) {
-        if(value < 0) {
-            value = value * -1;
-        }
-        this.value += value;
+    public void incrementValue(BigDecimal value) {
+        this.value = this.value.add(value);
     }
 
-    public void decrementValue(Double value) {
-        if(value > 0) {
-            value -= value * -1;
-        }
-        this.value = value;
+    public void decrementValue(BigDecimal value) {
+        this.value = this.value.subtract(value);
     }
 }
