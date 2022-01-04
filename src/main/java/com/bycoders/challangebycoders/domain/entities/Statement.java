@@ -5,6 +5,7 @@ import com.bycoders.challangebycoders.domain.enums.DocumentTypeEnum;
 import com.bycoders.challangebycoders.domain.enums.OperationTypeEnum;
 import com.bycoders.challangebycoders.domain.factories.OperationFactory;
 import com.bycoders.challangebycoders.domain.valueObject.OperationType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,7 +45,7 @@ public class Statement extends DomainEntity {
     private Instant createdAt;
 
 
-    public Statement(Long id, Client client, Integer type, Double value, java.lang.String cardNumber, LocalDateTime transactionDate) {
+    public Statement(Long id, Client client, Integer type, Double value, String cardNumber, LocalDateTime transactionDate) {
         super(id);
         this.client = client;
         this.type = type;
@@ -74,12 +75,12 @@ public class Statement extends DomainEntity {
         return OperationFactory.make(OperationTypeEnum.valueOf(this.type));
     }
 
-    @Transient
+    @JsonIgnore
     public boolean isCredit() {
         return this.getType().getIsCredit();
     }
 
-    @Transient
+    @JsonIgnore
     public Boolean isValid() {
         if(Objects.isNull(type)) {
             this.errors.addErrors("Tipo da operação", "Não pode estar vazio ou contem um valor invalido, favor usar de 1-9");

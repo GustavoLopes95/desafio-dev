@@ -57,7 +57,7 @@ public class ImportStatementsListUseCase {
 
             if(!client.isValid()) this.errors.add(Map.of("Linha " + this.index, client.getErrors()));
             client = this.findOrCreateClient(client);
-
+            
             var statement = StatementFactory.make(statementInput, client);
             if(!statement.isValid()) {
                 this.errors.add(Map.of("Linha " + this.index, statement.getErrors()));

@@ -2,13 +2,14 @@ package com.bycoders.challangebycoders.domain.entities;
 
 import com.bycoders.challangebycoders.core.domainObject.DomainEntity;
 import com.bycoders.challangebycoders.domain.enums.DocumentTypeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.Transient;
 import java.util.Objects;
 
 @Entity
@@ -48,6 +49,8 @@ public class Client extends DomainEntity {
         return DocumentTypeEnum.valueOf(this.documentType);
     }
 
+
+    @JsonIgnore
     public Boolean isValid() {
         if(Objects.isNull(name) || name.isEmpty()) {
             this.errors.addErrors("nome", "Não pode estar vazio");
@@ -63,5 +66,4 @@ public class Client extends DomainEntity {
 
         return this.errors.isValid();
     }
-
 }

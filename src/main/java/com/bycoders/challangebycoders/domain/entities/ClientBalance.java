@@ -33,7 +33,7 @@ public class ClientBalance extends DomainEntity {
     }
 
     public String getValue() {
-        return new DecimalFormat("#.00").format(value);
+        return new DecimalFormat("#.##").format(value);
     }
 
     public void incrementValue(Double value) {
