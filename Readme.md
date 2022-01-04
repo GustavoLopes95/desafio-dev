@@ -33,12 +33,14 @@ através de um endpoint.
 
     Como não sabemos quem iria consumir o projeto, os endpoints foram desenvolvidos seguindo o padrão rest.
 
-    Os errors do payload deveriam ser validados no command, porem como nestes caso exigiria realizar todo o parse para isso, e isso significa usar mais recuso computacional para isso, a validação foram incluidas apenas nas entidades. 
+    Os errors do payload deveriam ser validados no command, porem como nestes caso exigiria realizar todo o parse para isso, e isso significa usar mais recuso computacional para isso, a validação foram incluidas apenas nas entidades.
 
-    As entidades foram dividas em Clients, Statemente e Client Balance. Os statementes funcionam conforme os extrato bancario, neles conseguimos acompanhar a evolução bancaria de cada cliente enquanto o Client Balance é um snapshot de todas as transferencias realizadas na conta do usuario, assim se quisermos ver o total não vamos precisar ficar realizar window functions em SQl, simplismente recuperamos informações dessa tabela.
+    Como as listas poderiam ser muito grandes, serializamos a mesma com protobuf, dessa forma conseguimos reduzir ate metade do tamanho dos dados trafegados na rede, ideal para sermos mais economicos e mais performaticos.
+
+    As entidades foram dividas em Clients, Statemente e Client Balance. Os statementes funcionam conforme os extrato bancario, neles conseguimos acompanhar a evolução bancaria de cada cliente enquanto o Client Balance é um snapshot de todas as transações realizadas na conta do usuario, assim se quisermos ver o total não vamos precisar ficar realizar window functions em SQl, simplismente recuperamos informações dessa tabela.
     Obs: Para uma base de produção de periodo em periodo, geralmente os bancos realizam de 3 em 3 meses, deveria ser realizar um snapshot da tabela de statements também, e seus discriminados deveria ser transferidos para outra base de dados, assim evitariamos gargalos na base de dados principal. 
 
-<h2>Pontos de melhoria</h2>
+<h2>Pontos de melhorias</h2>
 
     Devido ao espaço curto de tempo para o desenvolvimento alguns pontos ficaram pendentes como:
         - Desacoplar o use case para cadastrar usuario do use case de importar lista de transações
