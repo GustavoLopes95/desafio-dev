@@ -104,7 +104,6 @@
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>compile</goal>
-							<goal>test-compile</goal>
 						</goals>
 					</execution>
 				</executions>

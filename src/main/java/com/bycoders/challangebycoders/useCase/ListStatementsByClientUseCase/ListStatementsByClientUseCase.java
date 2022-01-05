@@ -1,18 +1,18 @@
 package com.bycoders.challangebycoders.useCase.ListStatementsByClientUseCase;
 
-import com.bycoders.challangebycoders.repositories.ClientBalanceRepository;
-import com.bycoders.challangebycoders.repositories.StatementRepository;
+import com.bycoders.challangebycoders.domain.interfaces.IClientBalanceRepository;
+import com.bycoders.challangebycoders.domain.interfaces.IStatementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ListStatementsByClientUseCase {
 
-    private StatementRepository statementRepository;
-    private ClientBalanceRepository balanceRepository;
+    private IStatementRepository statementRepository;
+    private IClientBalanceRepository balanceRepository;
 
     @Autowired
-    public ListStatementsByClientUseCase(StatementRepository statementRepository, ClientBalanceRepository balanceRepository) {
+    public ListStatementsByClientUseCase(IStatementRepository statementRepository, IClientBalanceRepository balanceRepository) {
         this.statementRepository = statementRepository;
         this.balanceRepository = balanceRepository;
     }
