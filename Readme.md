@@ -3,7 +3,12 @@
     O serviço se resume em importar transações bancarias serializadas em protobuf e listar as mesmas através de um endpoint.
 
 <h2>Como executar ?</h2>
+Com Docker:
 
+1. Possuindo o docker instalado, caso não pode obter uma versão gratuita no link: https://www.docker.com/products/docker-desktop
+2. Utilize o comando docker-compose up -d
+
+Sem Docker:
 frontend:
 1. Baixe o projeto através do Git ou zip, caso seja um zip deverá ser descompacto antes de seguir para o proximo passo.
 2. Accese a pastar webapp
