@@ -1,0 +1,6 @@
+FROM adoptopenjdk/openjdk11:alpine
+RUN addgroup -S spring && adduser -S spring -G spring
+# USER spring:spring
+WORKDIR /home/spring
+
+ENTRYPOINT ["./mvnw","spring-boot:run"]

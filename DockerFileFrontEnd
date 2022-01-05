@@ -1,0 +1,8 @@
+FROM node:16.13.1-alpine
+RUN addgroup -S webapp && adduser -S webapp -G webapp
+
+WORKDIR /var/www/app
+
+RUN yarn install
+
+ENTRYPOINT ["yarn","start"]

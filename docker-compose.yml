@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: spring-boot
+    volumes:
+      - .:/home/spring
+    ports:
+      - "8080:8080"
+
+  frontend:
+    container_name: nodeJS
+    build:
+      context: .
+      dockerfile: DockerFileFrontEnd
+    volumes:
+      - ./Webapp:/var/www/app
+    ports:
+      - "3000:3000"
