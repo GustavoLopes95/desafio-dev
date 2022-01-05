@@ -64,7 +64,7 @@ public class ImportStatementsListUseCase {
             if(!client.isValid()) this.errors.add(Map.of("Linha " + this.index, client.getErrors()));
             client = this.findOrCreateClient(client);
 
-            var balance = clientBalanceRepository.findByClientId(client.getId());
+            var balance = this.getClientBalance(client);
             var statement = StatementFactory.make(statementInput, client, balance);
 
             if(!statement.isValid()) {
@@ -94,6 +94,12 @@ public class ImportStatementsListUseCase {
         else if(!statement.getType().getIsCredit()) balance.decrementValue(statement.getValue());
 
         clientBalanceRepository.update(balance);
+    }
+
+    private ClientBalance getClientBalance(Client client) {
+        if(Objects.isNull(client) || !client.isValid()) return null;
+
+        return clientBalanceRepository.findByClientId(client.getId());
     }
 
     private void sendNotification(List<Statement> statements) {

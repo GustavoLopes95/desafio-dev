@@ -63,40 +63,12 @@ public class ImportStatementsListUseCaseTest extends TestBase {
         var response = importStatementsListUseCase.execute(command);
 
         Assertions.assertThat(response.get("message")).isEqualTo("Todos as transações foram importadas com sucesso!");
-        Mockito.verify(statementRepository, Mockito.times(1)).save(Mockito.any(Statement.class));
+        Mockito.verify(statementRepository, Mockito.times(2)).save(Mockito.any(Statement.class));
         Mockito.verify(clientRepository, Mockito.times(2)).findByDocument(Mockito.anyString());
         // All client are already registered in database
         Mockito.verify(clientRepository, Mockito.never()).save(Mockito.any(Client.class));
         // All client already have balance
         Mockito.verify(clientBalanceRepository, Mockito.never()).save(Mockito.any(ClientBalance.class));
-        // For each statement need update the client balance
-        Mockito.verify(clientBalanceRepository, Mockito.times(2)).update(Mockito.any(ClientBalance.class));
-    }
-
-    @Test
-    @DisplayName("Service - should save the two user and statement together")
-    public void importStatementWithoutUser() throws Exception {
-        var command = this.makeImportStatementListCommand();
-        var statement = this.makeStatement();
-        var client = Mockito.mock(Client.class);
-        var balance = this.makeClientBalance();
-
-        Mockito.mock(StatementRepository.class).saveAll(List.of(statement));
-        Mockito.when(clientRepository.findByDocument(statement.getClient().getDocument())).thenReturn(null);
-
-        Mockito.doReturn(statement.getClient()).when(clientRepository).save(Mockito.any(Client.class));
-        Mockito.doReturn(balance).when(clientBalanceRepository).save(Mockito.any(ClientBalance.class));
-        Mockito.doReturn(balance).when(clientBalanceRepository).findByClientId(Mockito.anyLong());
-
-        var response = importStatementsListUseCase.execute(command);
-
-        Assertions.assertThat(response.get("message")).isEqualTo("Todos as transações foram importadas com sucesso!");
-        Mockito.verify(statementRepository, Mockito.times(1)).saveAll(Mockito.anyList());
-        Mockito.verify(clientRepository, Mockito.times(2)).findByDocument(Mockito.anyString());
-        Mockito.verify(clientRepository, Mockito.times(2)).save(Mockito.any(Client.class));
-
-        // Create client balance for the new clients
-        Mockito.verify(clientBalanceRepository, Mockito.times(2)).save(Mockito.any(ClientBalance.class));
         // For each statement need update the client balance
         Mockito.verify(clientBalanceRepository, Mockito.times(2)).update(Mockito.any(ClientBalance.class));
     }
@@ -109,7 +81,7 @@ public class ImportStatementsListUseCaseTest extends TestBase {
         var client = this.makeClient();
         var balance = this.makeClientBalance();
 
-        Mockito.mock(StatementRepository.class).saveAll(List.of(statement));
+        Mockito.mock(StatementRepository.class).save(statement);
         Mockito.doReturn(client).when(clientRepository).findByDocument(Mockito.anyString());
         Mockito.doReturn(balance).when(clientBalanceRepository).save(Mockito.any(ClientBalance.class));
         Mockito.doReturn(balance).when(clientBalanceRepository).findByClientId(Mockito.anyLong());
@@ -119,7 +91,7 @@ public class ImportStatementsListUseCaseTest extends TestBase {
         Assertions.assertThat(response.get("message")).isEqualTo("Operação parcialmente concluida!");
         Assertions.assertThat(response.get("errors")).isNotNull();
 
-        Mockito.verify(statementRepository, Mockito.times(1)).saveAll(Mockito.anyList());
+        Mockito.verify(statementRepository, Mockito.times(1)).save(Mockito.any(Statement.class));
         Mockito.verify(clientRepository, Mockito.times(1)).findByDocument(Mockito.anyString());
 
         // All client already have balance

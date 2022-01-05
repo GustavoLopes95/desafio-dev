@@ -4,6 +4,7 @@ import com.bycoders.challangebycoders.TestBase;
 import com.bycoders.challangebycoders.commands.ImportStatementListCommand;
 import com.bycoders.challangebycoders.exceptions.DomainException;
 import com.bycoders.challangebycoders.useCase.ImportStatementsListUseCase;
+import com.bycoders.challangebycoders.useCase.ListStatementsByClientUseCase.ListStatementsByClientUseCase;
 import com.bycoders.protobuf.StatementsProtos;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ import java.util.Map;
 @ActiveProfiles("test")
 @WebMvcTest
 @AutoConfigureMockMvc
-public class StatementControllerTest extends TestBase {
+public class StatementImportControllerTest extends TestBase {
 
     static String STATEMENT_API = "/api/v1/importStatements";
 
@@ -37,6 +38,9 @@ public class StatementControllerTest extends TestBase {
 
     @MockBean
     ImportStatementsListUseCase importStatementsUseCase;
+
+    @MockBean
+    ListStatementsByClientUseCase listStatementsByClientUseCase;
 
     @Test
     @DisplayName("API - receive statement list")

@@ -9,6 +9,7 @@ import com.bycoders.challangebycoders.utils.StringUtils;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class StatementFactory {
 
@@ -17,8 +18,9 @@ public class StatementFactory {
         var transactionDate = StatementFactory.parseDatetime(cnab);
         var value = new BigDecimal(StringUtils.subStringOrNull(cnab,9, 18));
         var cardNumber = StringUtils.subStringOrNull(cnab,30, 41);
+        var accountBalance = Objects.isNull(balance) ? new BigDecimal(0.00) : balance.getValue();
 
-        return  new Statement(client, operationType, value, cardNumber, transactionDate, balance.getValue());
+        return  new Statement(client, operationType, value, cardNumber, transactionDate, accountBalance);
     }
 
     private static LocalDateTime parseDatetime(String cnab) {

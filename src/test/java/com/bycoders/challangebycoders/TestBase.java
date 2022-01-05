@@ -7,21 +7,14 @@ import com.bycoders.challangebycoders.domain.entities.Statement;
 import com.bycoders.challangebycoders.domain.enums.DocumentTypeEnum;
 import com.bycoders.challangebycoders.domain.enums.OperationTypeEnum;
 import com.bycoders.challangebycoders.domain.factories.OperationFactory;
-import com.bycoders.challangebycoders.useCase.ListStatementsByClientUseCase.ListStatementsByClientUseCaseResponse;
 import com.bycoders.protobuf.StatementsProtos;
-import org.hibernate.id.GUIDGenerator;
 
 import javax.xml.bind.DatatypeConverter;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 
 public class TestBase {
 

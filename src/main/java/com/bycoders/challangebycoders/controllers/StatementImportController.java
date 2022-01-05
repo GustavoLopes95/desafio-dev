@@ -20,9 +20,6 @@ public class StatementImportController {
     @Autowired
     private ImportStatementsListUseCase importStatementsListUseCase;
 
-    @Autowired
-    private ListStatementsByClientUseCase listStatementsByClientUseCase;
-
     @PostMapping
     public ResponseEntity<Map<String, Object>> importStatements(InputStream statements) throws Exception {
         var command = new ImportStatementListCommand(StatementsProtos.Statements.parseFrom(statements).getStatementList());
