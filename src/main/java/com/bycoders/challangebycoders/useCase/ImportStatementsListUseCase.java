@@ -7,6 +7,9 @@ import com.bycoders.challangebycoders.domain.entities.Statement;
 import com.bycoders.challangebycoders.domain.factories.ClientFactory;
 import com.bycoders.challangebycoders.domain.factories.StatementFactory;
 import com.bycoders.challangebycoders.core.domainObject.DomainValidateError;
+import com.bycoders.challangebycoders.domain.interfaces.IClientBalanceRepository;
+import com.bycoders.challangebycoders.domain.interfaces.IClientRepository;
+import com.bycoders.challangebycoders.domain.interfaces.IStatementRepository;
 import com.bycoders.challangebycoders.repositories.ClientBalanceRepository;
 import com.bycoders.challangebycoders.repositories.ClientRepository;
 import com.bycoders.challangebycoders.repositories.StatementRepository;
@@ -23,12 +26,12 @@ public class ImportStatementsListUseCase {
 
     private List<Map<String, DomainValidateError>> errors = new ArrayList<>();
 
-    private ClientRepository clientRepository;
-    private ClientBalanceRepository clientBalanceRepository;
-    private StatementRepository statementRepository;
+    private IClientRepository clientRepository;
+    private IClientBalanceRepository clientBalanceRepository;
+    private IStatementRepository statementRepository;
 
     @Autowired
-    public ImportStatementsListUseCase(ClientRepository clientRepository, StatementRepository statementRepository, ClientBalanceRepository clientBalanceRepository) {
+    public ImportStatementsListUseCase(IClientRepository clientRepository, IStatementRepository statementRepository, IClientBalanceRepository clientBalanceRepository) {
         this.clientRepository = clientRepository;
         this.statementRepository = statementRepository;
         this.clientBalanceRepository = clientBalanceRepository;

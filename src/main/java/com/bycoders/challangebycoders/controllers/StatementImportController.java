@@ -2,7 +2,6 @@ package com.bycoders.challangebycoders.controllers;
 
 import com.bycoders.challangebycoders.commands.ImportStatementListCommand;
 import com.bycoders.challangebycoders.useCase.ImportStatementsListUseCase;
-import com.bycoders.challangebycoders.useCase.ListStatementsByClientUseCase.ListStatementsByClientUseCase;
 import com.bycoders.protobuf.StatementsProtos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
